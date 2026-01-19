@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* global class */
+@media (min-width:360px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .main {
+    padding: 1.5rem 0 2.5rem;
+  }
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 360px;
+}
+
+/* navbar */
+.navbar {
+  background-color: #333;
+  display: block;
+    position: sticky;
+}
+
+.logo{
+  width: 100px;
+}

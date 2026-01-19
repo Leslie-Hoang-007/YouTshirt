@@ -40,5 +40,9 @@ app.get("/", (req, res) => {
     res.send("Server running");
 });
 
+app.get("/hello", (req, res) => {
+  res.send("Hello world");
+});
+
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server on port ${PORT}`));
