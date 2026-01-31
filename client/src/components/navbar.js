@@ -1,6 +1,17 @@
 import waveLogo from '../media/waveLogo.png';
+import { useState, useEffect } from 'react';
 
-export const Navbar = () => {
+export const Navbar = ({isModalUp, setIsModalUp}) => {
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        checkMobile();
+    });
+
+    const checkMobile = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
 
     return (
         <div className="navbar" >
@@ -8,25 +19,21 @@ export const Navbar = () => {
                 <div className="navbar-content">
                     {/* Logo */}
                     <id className="nav-logo">
-                        <img className="logo" src={waveLogo}/>
+                        <img className="logo" src={waveLogo} />
                     </id>
 
-
-                    {/* Navigation Links */}
-                    <ul>
-                        <li>
-                            Logo
-                        </li>
-                        <li>
-                            Clothing
-                        </li>
-                        <li>
-                            Accessories
-                        </li>
-                        <li>
-                            Shoppmoing Bag
-                        </li>
-                    </ul>
+                    <div className='navbar-menu'>
+                        {/* Navigation Links */}
+                        <ul>
+                            <li>
+                                <h1>{isModalUp? '+':'-'}</h1>
+                                
+                            </li>
+                            <li>
+                                <button onClick = {() => setIsModalUp(!isModalUp)}>Toggle</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

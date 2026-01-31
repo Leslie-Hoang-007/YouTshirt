@@ -2,28 +2,20 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home } from './pages/home';
 import { Navbar } from './components/navbar';
+import { useState } from 'react';
 
 function App() {
+
+  // Lifted State: Shared between Navbar and Pages
+  const [isModalUp, setIsModalUp] = useState(false);
+
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+
       <Router>
-        <Navbar />
+        <Navbar isModalUp={isModalUp} setIsModalUp={setIsModalUp}/>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home isModalUp={isModalUp} setIsModalUp={setIsModalUp}/>} />
         </Routes>
       </Router>
     </div>

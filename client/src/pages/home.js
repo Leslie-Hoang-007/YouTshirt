@@ -1,21 +1,26 @@
 
-import { useEffect } from "react";
-export const Home = () => {
+import { useEffect, useState } from "react";
+export const Home = ({ isModalUp, setIsModalUp }) => {
 
-    useEffect(() => {
 
-    }, [])
 
 
     return (
         <main className="main">
             <div className="container">
-                <div className="home-header">
+
+                <div style={{ padding: 20 }}>
+                    <h1>Modal Test</h1>
+                    <div>{isModalUp ? 'yes' : 'no'}</div>
+                    <button onClick={() => setIsModalUp(!isModalUp)}>
+                        Toggle
+                    </button>
+
+                    {isModalUp && <p>This only shows when ON</p>}
+                    {!isModalUp && <p>This only shows when OFF</p>}
 
                 </div>
-                <div className="home-block">
-                    <p>hello world</p>
-                </div>
+
             </div>
         </main>
     );
