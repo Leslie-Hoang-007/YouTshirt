@@ -7,6 +7,20 @@ import fourImg from '../media/4.png';
 import fiveImg from '../media/5.png';
 import sixImg from '../media/6.png';
 import sevenImg from '../media/7.png';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, A11y, Navigation, EffectFade, Keyboard, Zoom } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/effect-fade';
+import 'swiper/css/zoom';
+
+
+
+
+
 export const Home = ({ isModalUp, setIsModalUp }) => {
 
     const clothes = [
@@ -19,10 +33,28 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         { id: 7, name: 'Faith over Feat Hat', price: '$21', description: 'It is a soft shirt7', sizes: ['S'], status: 'available', img: [sevenImg, twoImg] },
     ]
 
+
+
     // constants
     const [colunmSize, setColumnSize] = useState([1, 3, 5]);
     const [colunmIndex, setColumnIndex] = useState(0);
     const [isMobile, setIsmobile] = useState(false);
+
+    useEffect(() => {
+        // checks if mobile and changes colunm sizes available
+        if (isMobile) {
+            setColumnSize([1, 2, 3]);
+            setColumnIndex(0);
+        } else {
+            setColumnSize([3, 5]);
+            setColumnIndex(0);
+        }
+    }, [isMobile]);
+
+    const cycleColumns = () => {
+        setColumnIndex((prev) => (prev + 1) % colunmSize.length);
+    };
+
 
 
     // Changes Array of Apparel Data into smaller chunks based on the number of colunms
@@ -36,7 +68,7 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
 
     // Renders chunkArray
     const renderClothesRow = () => {
-        const output = chunkArray(clothes, colunmSize[colunmIndex]
+        return chunkArray(clothes, colunmSize[colunmIndex]
         ).map((row) => (
             <tr>
                 {row.map((item) => (
@@ -53,26 +85,57 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
             </tr>
         ));
 
+
+    };
+
+    const swiperImages = () => {
         return (
-            <div>{output}</div>
+            <Swiper
+                modules={[Pagination, A11y, Navigation, EffectFade, Keyboard, Zoom]}
+                pagination={true}
+                navigation={true}
+                loop={true}
+                // effect={'fade'}
+                zoom={true}
+
+                keyboard={{
+                    enabled: true,
+                }}
+
+                style={{
+                    '--swiper-navigation-color': 'dark-grey',
+                    '--swiper-pagination-color': 'dark-grey',
+                }}
+
+                // touch gestures
+                simulateTouch={true}
+                allowTouchMove={true}
+                
+                touchAngle={45}   // only trigger swipe if mostly horizontal
+                threshold={10}    // ignore tiny accidental movements
+
+                
+              
+            >
+                <SwiperSlide>
+                    <div className="swiper-zoom-container">
+                        <img src={oneImg} />
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className="swiper-zoom-container">
+                        <img src={twoImg} />
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className="swiper-zoom-container">
+                        <img src={threeImg} />
+                    </div>
+                </SwiperSlide>
+            </Swiper>
         );
-    };
+    }
 
-    useEffect(() => {
-        // checks if mobile and changes colunm sizes available
-        if(isMobile){
-            setColumnSize([1,2,3]);
-            setColumnIndex(0);
-        } else{
-            setColumnSize([3,5]);
-            setColumnIndex(0);
-        }
-    },[isMobile]);
-
-    const cycleColumns = () => {
-        setColumnIndex((prev) => (prev + 1) % colunmSize.length);
-    };
-    
     return (
         <main className="main">
             <div className="container">
@@ -100,6 +163,9 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
                         {renderClothesRow()}
                     </tbody>
                 </table>
+                <div>
+                    {swiperImages()}
+                </div>
             </div>
         </main>
     );
