@@ -27,10 +27,15 @@ export const Navbar = ({isModalUp, setIsModalUp}) => {
                         <ul>
                             <li>
                                 <h1>{isModalUp? '+':'-'}</h1>
-                                
                             </li>
                             <li>
                                 <button onClick = {() => setIsModalUp(!isModalUp)}>Toggle</button>
+                            </li>
+                            <li>
+                                <h1>Account</h1>
+                            </li>
+                            <li>
+                                <h1>Shopping Cart</h1>
                             </li>
                         </ul>
                     </div>
