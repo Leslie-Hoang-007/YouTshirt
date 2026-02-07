@@ -10,16 +10,14 @@ import sevenImg from '../media/7.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Navigation, EffectFade, Keyboard, Zoom } from 'swiper/modules';
 
+
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import 'swiper/css/zoom';
-
-
-
-
 
 export const Home = ({ isModalUp, setIsModalUp }) => {
 
@@ -36,7 +34,7 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
 
 
     // constants
-    const [colunmSize, setColumnSize] = useState([1, 3, 5]);
+    const [colunmSize, setColumnSize] = useState([3, 5]);
     const [colunmIndex, setColumnIndex] = useState(0);
     const [isMobile, setIsmobile] = useState(false);
 
@@ -104,18 +102,18 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
 
                 style={{
                     '--swiper-navigation-color': 'dark-grey',
-                    '--swiper-pagination-color': 'dark-grey',
+                    '--swiper-pagination-color': 'black',
+                    '--swiper-pagination-bullet-vertical-gap': '0px',
+                    '--swiper-pagination-bottom': '0px'
+                    // 'height': '100px'
                 }}
 
                 // touch gestures
                 simulateTouch={true}
                 allowTouchMove={true}
-                
+
                 touchAngle={45}   // only trigger swipe if mostly horizontal
                 threshold={10}    // ignore tiny accidental movements
-
-                
-              
             >
                 <SwiperSlide>
                     <div className="swiper-zoom-container">
@@ -136,11 +134,50 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         );
     }
 
+    const [isLeftOpen, setIsLeftOpen] = useState(false);
+    const [isRightOpen, setIsRightOpen] = useState(false);
+
+    const leftPannel = () => {
+        return (
+            <div>
+                hello
+                <button onClick={() => setIsLeftOpen(false)}>Close</button>
+            </div>
+        )
+    }
+
+    const rightPannel = () => {
+        return (
+            <div>
+                hello
+                <button onClick={() => setIsRightOpen(false)}>Close</button>
+            </div>
+        )
+    }
     return (
         <main className="main">
             <div className="container">
 
+                <button onClick={() => setIsLeftOpen(true)}>Open Left Panel</button>
+                <button onClick={() => setIsRightOpen(true)}>Open Right Panel</button>
+
+                <div className={`side-panel left ${isLeftOpen ? "open" : ""}`}>
+                    {leftPannel()}
+                </div>
+
+                <div className={`side-panel right ${isRightOpen ? "open" : ""}`}>
+                    {rightPannel()}
+                </div>
+
+
+
+                <div>
+                    {swiperImages()}
+                </div>
+
                 <h1>Modal Test</h1>
+
+
                 {/* toggle Shevron */}
                 <div>{isModalUp ? 'yes' : 'no'}</div>
                 {isModalUp && <p>This only shows when ON</p>}
@@ -163,9 +200,6 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
                         {renderClothesRow()}
                     </tbody>
                 </table>
-                <div>
-                    {swiperImages()}
-                </div>
             </div>
         </main>
     );
