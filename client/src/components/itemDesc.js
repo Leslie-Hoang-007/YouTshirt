@@ -1,7 +1,13 @@
-export const ItemDesc = () =>{
-    return(
+export const ItemDesc = ({itemSelected}) => {
+    return (
         <div>
-            ItemDesc
+            {itemSelected.name}
+            {itemSelected.price}
+            {itemSelected.description}
+            {itemSelected.sizes}
+            {itemSelected.status}
         </div>
     );
 }
+
+export default ItemDesc;
