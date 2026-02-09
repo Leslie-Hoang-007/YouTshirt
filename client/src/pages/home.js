@@ -19,8 +19,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import 'swiper/css/zoom';
 
-export const Home = ({ isModalUp, setIsModalUp }) => {
 
+export const Home = ({ isModalUp, setIsModalUp }) => {
+    
+    // constants
+    
     const clothes = [
         { id: 1, name: 'Rebuke You Shirt', price: '$20', description: 'It is a soft shirt', sizes: ['S', 'M', 'L'], status: 'available', img: [oneImg, twoImg] },
         { id: 2, name: 'Jesus is King Sweater', price: '$30', description: 'It is a shirt2', sizes: ['S', 'M', 'L'], status: 'available', img: [twoImg, twoImg] },
@@ -30,23 +33,28 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         { id: 6, name: 'Jogn 3:16 Slippers', price: '$70', description: 'It is a soft shirt6', sizes: ['S'], status: 'available', img: [sixImg, twoImg] },
         { id: 7, name: 'Faith over Feat Hat', price: '$21', description: 'It is a soft shirt7', sizes: ['S'], status: 'available', img: [sevenImg, twoImg] },
     ]
-
-
-
-    // constants
+    
+    // for context
     const [colunmSize, setColumnSize] = useState([3, 5]);
     const [colunmIndex, setColumnIndex] = useState(0);
     const [isMobile, setIsmobile] = useState(false);
 
+    // for Modals
+    const [isLeftOpen, setIsLeftOpen] = useState(false);
+    const [isRightOpen, setIsRightOpen] = useState(false);
+    const [itemSelected, setItemSelected] = useState({});
+    
     useEffect(() => {
         // checks if mobile and changes colunm sizes available
         if (isMobile) {
-            setColumnSize([1, 2, 3]);
+            setColumnSize([3, 2, 1]);
             setColumnIndex(0);
         } else {
-            setColumnSize([3, 5]);
+            setColumnSize([5, 3]);
             setColumnIndex(0);
         }
+
+        setItemSelected(clothes[0])
     }, [isMobile]);
 
     const cycleColumns = () => {
@@ -63,7 +71,6 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         }
         return result;
     };
-
     // Renders chunkArray
     const renderClothesRow = () => {
         return chunkArray(clothes, colunmSize[colunmIndex]
@@ -71,7 +78,7 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
             <tr>
                 {row.map((item) => (
                     <td>
-                        <img src={item.img[0]} />
+                        <img src={item.img[0]} onClick={()=>{setIsLeftOpen(true); setItemSelected(item)}}/>
                         <p>
                             {item.name}
                         </p>
@@ -82,15 +89,15 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
                 ))}
             </tr>
         ));
-
-
+        
+        
     };
-
+    
     const swiperImages = () => {
         return (
             <Swiper
-                modules={[Pagination, A11y, Navigation, EffectFade, Keyboard, Zoom]}
-                pagination={true}
+            modules={[Pagination, A11y, Navigation, EffectFade, Keyboard, Zoom]}
+            pagination={true}
                 navigation={true}
                 loop={true}
                 // effect={'fade'}
@@ -134,26 +141,20 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         );
     }
 
-    const [isLeftOpen, setIsLeftOpen] = useState(false);
-    const [isRightOpen, setIsRightOpen] = useState(false);
 
+    
     const leftPannel = () => {
         return (
             <div>
                 hello
                 <button onClick={() => setIsLeftOpen(false)}>Close</button>
+                {swiperImages()}
+                {itemSelected.name}
             </div>
         )
     }
 
-    const rightPannel = () => {
-        return (
-            <div>
-                hello
-                <button onClick={() => setIsRightOpen(false)}>Close</button>
-            </div>
-        )
-    }
+   
     return (
         <main className="main">
             <div className="container">
@@ -166,17 +167,9 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
                 </div>
 
                 <div className={`side-panel right ${isRightOpen ? "open" : ""}`}>
-                    {rightPannel()}
+                    
                 </div>
-
-
-
-                <div>
-                    {swiperImages()}
-                </div>
-
                 <h1>Modal Test</h1>
-
 
                 {/* toggle Shevron */}
                 <div>{isModalUp ? 'yes' : 'no'}</div>
