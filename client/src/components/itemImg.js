@@ -2,7 +2,7 @@ import {useState} from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Navigation, EffectFade, Keyboard, Zoom } from 'swiper/modules';
 
-export const ItemImg = ({itemSelected}) => {
+export const ItemImg = ({clothes, itemIndex}) => {
    
     return (
        <Swiper
@@ -34,7 +34,7 @@ export const ItemImg = ({itemSelected}) => {
             >
 
                 {/* Maps images in selected item  */}
-                {itemSelected.img.map((e)=>(
+                {clothes[itemIndex].img.map((e)=>(
                     <SwiperSlide>
                         <img src={e}/>
                     </SwiperSlide>

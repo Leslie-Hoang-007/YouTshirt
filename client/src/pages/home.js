@@ -22,7 +22,7 @@ import ItemDesc from "../components/itemDesc.js";
 
 export const Home = ({ isModalUp, setIsModalUp }) => {
 
-    // constants
+    // items
 
     const clothes = [
         { id: 1, name: 'Rebuke You Shirt', price: '$20', description: 'It is a soft shirt', sizes: ['S', 'M', 'L'], status: 'available', img: [oneImg, twoImg, threeImg] },
@@ -34,6 +34,8 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         { id: 7, name: 'Faith over Feat Hat', price: '$21', description: 'It is a soft shirt7', sizes: ['S'], status: 'available', img: [sevenImg, twoImg] },
     ]
 
+    const [itemIndex, setItemIndex] = useState(0);
+
     // for context
     const [colunmSize, setColumnSize] = useState([3, 5]);
     const [colunmIndex, setColumnIndex] = useState(0);
@@ -42,7 +44,6 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
     // for Modals
     const [isLeftOpen, setIsLeftOpen] = useState(false);
     const [isRightOpen, setIsRightOpen] = useState(false);
-    const [itemSelected, setItemSelected] = useState({ id: 0, name: '', price: '', description: '', sizes: [], status: '', img: [] });
 
     useEffect(() => {
         // checks if mobile and changes colunm sizes available
@@ -54,12 +55,35 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
             setColumnIndex(0);
         }
 
-        setItemSelected(clothes[0])
+
     }, [isMobile]);
 
     const cycleColumns = () => {
         setColumnIndex((prev) => (prev + 1) % colunmSize.length);
     };
+
+    
+    useEffect(() => {
+        if (!isLeftOpen && !isRightOpen) return;// Skips Below if Both Modals are closed
+
+        const handleWheel = (e) => {
+            e.preventDefault();// prevents default actions
+
+            setItemIndex((prev) => {
+                if (e.deltaY > 0) {
+                    // scroll down → next item
+                    return (prev + 1) % clothes.length;
+                } else {
+                    // scroll up → previous item
+                    return (prev - 1 + clothes.length) % clothes.length;
+                }
+            });
+        };
+
+        window.addEventListener('wheel', handleWheel, { passive: false });// add event listener
+
+        return () => window.removeEventListener('wheel', handleWheel);// terminates event listeners
+    }, [isLeftOpen, isRightOpen, clothes.length]);
 
 
 
@@ -71,18 +95,19 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
         }
         return result;
     };
+
     // Renders chunkArray
     const renderClothesRow = () => {
         return chunkArray(clothes, colunmSize[colunmIndex]
         ).map((row) => (
             <tr>
-                {row.map((item) => (
+                {row.map((item, index) => (
                     <td>
-                        <img src={item.img[0]} onClick={() => { 
-                            setIsLeftOpen(true); 
-                            setItemSelected(item);
+                        <img src={item.img[0]} onClick={() => {
+                            setIsLeftOpen(true);
                             setIsRightOpen(true);
-                            }} />
+                            setItemIndex(index);
+                        }} />
                         <p>
                             {item.name}
                         </p>
@@ -93,8 +118,6 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
                 ))}
             </tr>
         ));
-
-
     };
 
 
@@ -103,7 +126,7 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
             <div>
                 hello
                 <button onClick={() => setIsLeftOpen(false)}>Close</button>
-                <ItemImg itemSelected={itemSelected}/>
+                <ItemImg clothes={clothes} itemIndex={itemIndex} />
             </div>
         )
     }
@@ -113,7 +136,7 @@ export const Home = ({ isModalUp, setIsModalUp }) => {
             <div>
                 hello
                 <button onClick={() => { setIsRightOpen(false) }}>close</button>
-                <ItemDesc itemSelected={itemSelected}/>
+                <ItemDesc clothes={clothes} itemIndex={itemIndex}/> 
             </div>
         )
     }
